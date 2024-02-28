@@ -14,3 +14,6 @@ keywords:
 sources:
 - https://github.com/aceeric/ociregistry
 version: 1.0.0
+maintainers:
+- name: Eric Ace
+  url: https://github.com/aceeric

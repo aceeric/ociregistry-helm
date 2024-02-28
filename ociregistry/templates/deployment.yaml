@@ -41,11 +41,11 @@ spec:
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: /v2/
+            path: /health
             port: http
         readinessProbe:
           httpGet:
-            path: /v2/
+            path: /health
             port: http
         resources:
         {{- toYaml .Values.resources | nindent 10 }}
@@ -78,10 +78,10 @@ spec:
       {{- if .Values.persistence.persistentVolumeClaim.enabled }}
       - name: images
         persistentVolumeClaim:
-          {{- if .Values.persistence.persistentVolumeClaim.spec }}
-          claimName: {{ include "ociregistry.fullname" . }}
+          {{- if .Values.persistence.persistentVolumeClaim.existingClaimName }}
+          claimName: {{ .Values.persistence.persistentVolumeClaim.existingClaimName }}
           {{- else }}
-          claimName: {{ .Values.persistence.persistentVolumeClaim.claimName }}
+          claimName: {{ include "ociregistry.fullname" . }}
           {{- end }}
       {{- end }}
       {{- if .Values.upstreamConfig }}

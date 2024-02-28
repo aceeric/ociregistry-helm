@@ -1,4 +1,4 @@
-{{- if and .Values.persistence.persistentVolumeClaim.enabled .Values.persistence.persistentVolumeClaim.spec -}}
+{{- if and .Values.persistence.persistentVolumeClaim.enabled (not .Values.persistence.persistentVolumeClaim.existingClaimName) -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "ociregistry.labels" . | nindent 4 }}
 spec:
-  {{- with .Values.persistence.persistentVolumeClaim.spec }}
+  {{- with .Values.persistence.persistentVolumeClaim.newClaimSpec }}
   accessModes:
   {{- toYaml .accessModes | nindent 2 }}
   resources:
