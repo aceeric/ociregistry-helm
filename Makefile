@@ -11,4 +11,4 @@ helm-package:
 
 .PHONY: helm-index
 helm-index:
-	helm repo index --url https://ericace.github.io/ociregistry-helm/ .
+	helm repo index --url https://aceeric.github.io/ociregistry-helm .
