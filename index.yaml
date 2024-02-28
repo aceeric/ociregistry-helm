@@ -3,9 +3,9 @@ entries:
   ociregistry:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-02-28T17:52:13.854847209-05:00"
+    created: "2024-02-28T18:57:58.640101111-05:00"
     description: A pull-only, pull-through caching OCI image distribution server.
-    digest: 7e7a0d7ee7cae287e2d5a02f3cacef580d4c59ca05a0b58e1dd02e732ff32165
+    digest: ac4cf3afe66931599ae8697b22ab6a2217bc5c7a40239ca653102f1056a4af44
     home: https://github.com/aceeric/ociregistry
     keywords:
     - oci
@@ -25,4 +25,4 @@ entries:
     urls:
     - https://aceeric.github.io/ociregistry-helm/ociregistry-1.0.0.tgz
     version: 1.0.0
-generated: "2024-02-28T17:52:13.854019518-05:00"
+generated: "2024-02-28T18:57:58.639230228-05:00"
