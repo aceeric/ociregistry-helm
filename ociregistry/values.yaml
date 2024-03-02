@@ -1,3 +1,5 @@
+# -- Specifies the image. You can populate `tag` or `digest` or both.
+# @default -- see sub-fields
 image:
   # -- The image registry
   registry: quay.io
@@ -5,7 +7,7 @@ image:
   repository: appzygy/ociregistry
   # -- The image tag
   tag: 1.1.0
-  # -- Specify a digest to override the tag
+  # -- Specify a digest to use instead of the tag
   digest:
   # -- The image pull policy
   pullPolicy: IfNotPresent
@@ -21,24 +23,28 @@ fullnameOverride: ""
 
 # -- Causes command-line args to be templated into the server Deployment spec to
 # change the default server behavior.
+# @default -- See sub-fields
 configs:
+  # -- specifies the log level. The default log level coded into the binary
+  # is `error` but we use `info` here to get started.
   logLevel: info
   # -- Allows overriding the default port of 8080. If you change the port, you must
   # also change the `service.port` value to match.
-  port: ""
+  port:
   # -- The configPath does not need to be defined if `upstreamConfig` is defined.
-  # However, if you specify both, the 'configPath' value must match
+  # However, if you specify both, the `configPath` value must match
   # `upstreamConfig.mountPath`.
   configPath: ""
   # -- Allows overriding the default image path of `/var/lib/ociregistry`. By default the
   # server will use this path for image storage. If you mount the storage at some other
   # path you must change the `configs.imagePath` to match.
-  imagePath: 
+  imagePath: ""
   # -- Enables overriding the default timeout of 60000 milliseconds (6 minutes) to
   # pull from an upstream server.
   pullTimeout: ""
 
-# --Defines the service account configuration
+# -- Defines the service account configuration
+# @default -- See sub-fields
 serviceAccount:
   # -- Creates a service account for the server
   create: true
@@ -51,10 +57,13 @@ serviceAccount:
 
 # -- Provide any additional pod annotations
 podAnnotations: {}
+
 # -- Provide any additional pod labels
 podLabels: {}
+
 # -- Provide any additional pod security context
 podSecurityContext: {}
+
 # -- Provide any additional deployment security context
 securityContext: {}
 
@@ -64,6 +73,7 @@ securityContext: {}
 # the default configuration is to create a NodePort service, which
 # makes the registry available to containerd on each host. If you change the
 # port, you must also specify the `configs.port` above.
+# @default -- See sub-fields
 service:
   type: NodePort
   nodePort: 31080
@@ -71,6 +81,7 @@ service:
 
 # -- Configures an ingress for access to the registry outside the cluster. (Could
 # be used to run the registry in one cluster to cache for multiple other clusters.)
+# @default -- See sub-fields
 ingress:
   enabled: false
   className: ""
@@ -95,8 +106,9 @@ volumes: []
 
 # -- Volume Mounts provides the container mount paths. Since this is a caching
 # registry it needs a place to store image data.
+# @default -- See sub-fields
 volumeMounts:
-# -- When you select a `persistence` type, a volume will be templated named 'images'.
+# -- When you select a `persistence` type, a volume will be templated named `images`.
 # By default the server will look in the `mountPath`. If you mount the storage at some
 # other path you must change the `configs.imagePath` to match.
 - name: images
@@ -106,8 +118,10 @@ volumeMounts:
 
 # -- Defines a node selector
 nodeSelector: {}
+
 # -- Defines Pod tolerations
 tolerations: []
+
 # -- Defines Pod affinity
 affinity: {}
 
@@ -115,8 +129,10 @@ affinity: {}
 # testing or experimentation) enable the `emptyDir` option. If you have a storage
 # provisioner, enable the persistentVolumeClaim option. The `hostPath` option uses
 # host storage. `emptyDir` is enabled by default.
+# @default -- See sub-fields
 persistence:
   # -- Creates a PVC for persistent storage
+  # @default -- See sub-fields
   persistentVolumeClaim:
     # -- Persistent storage is disabled by default. Set to `true` to enable persistent storage
     enabled: false
@@ -124,6 +140,7 @@ persistence:
     # the name blank and fill in the `newClaimSpec` hash.
     existingClaimName: ""
     # -- Supply the parameters for a new PVC
+    # @default -- See sub-fields
     newClaimSpec:
       # -- Access mode(s) supported by the storage class
       accessModes:
@@ -143,6 +160,7 @@ persistence:
       #  matchExpressions: []
   # -- Implements host path storage for the server. Suitable for testing and a quick
   # capability evaluation.
+  # @default -- See sub-fields
   hostPath:
     # -- Host path is disabled by default
     enabled: false
@@ -152,6 +170,7 @@ persistence:
     path: /var/lib/ociregistry
   # -- Implements Empty Dir storage for the server. Suitable for testing and a quick
   # capability evaluation.
+  # @default -- See sub-fields
   emptyDir:
     # -- This is the default option to facilitate a quick start
     enabled: true

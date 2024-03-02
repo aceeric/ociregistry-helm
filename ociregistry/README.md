@@ -55,7 +55,7 @@ While still shelled into the host:
 crictl pull docker.io/hello-world:latest
 ```
 
-Putside of the cluster, tail the logs on the pull-through registry server and you will see the traffic from containerd. Example:
+External to the cluster, tail the logs on the pull-through registry server and you will see the traffic from containerd. Example:
 
 ```
 echo server HEAD:/v2/hello-world/manifests/latest?ns=docker.io status=200 latency=2.664780196s host=n.n.n.n:8080 ip=n.n.n.n
@@ -69,7 +69,7 @@ More information, including how to configure access to upstream registries for a
 
 ## Chart Details
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.1.0](https://img.shields.io/badge/AppVersion-1.1.0-informational?style=flat-square)
 
 ## Chart Values
 
@@ -78,32 +78,34 @@ More information, including how to configure access to upstream registries for a
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` | Defines Pod affinity |
-| configs | object | `{"configPath":"","imagePath":null,"logLevel":"info","port":"","pullTimeout":""}` | Causes command-line args to be templated into the server Deployment spec to change the default server behavior. |
-| configs.configPath | string | `""` | The configPath does not need to be defined if `upstreamConfig` is defined. However, if you specify both, the 'configPath' value must match `upstreamConfig.mountPath`. |
-| configs.imagePath | string | `nil` | Allows overriding the default image path of `/var/lib/ociregistry`. By default the server will use this path for image storage. If you mount the storage at some other path you must change the `configs.imagePath` to match. |
-| configs.port | string | `""` | Allows overriding the default port of 8080. If you change the port, you must also change the `service.port` value to match. |
+| configs | object | See sub-fields | Causes command-line args to be templated into the server Deployment spec to change the default server behavior. |
+| configs.configPath | string | `""` | The configPath does not need to be defined if `upstreamConfig` is defined. However, if you specify both, the `configPath` value must match `upstreamConfig.mountPath`. |
+| configs.imagePath | string | `""` | Allows overriding the default image path of `/var/lib/ociregistry`. By default the server will use this path for image storage. If you mount the storage at some other path you must change the `configs.imagePath` to match. |
+| configs.logLevel | string | `"info"` | specifies the log level. The default log level coded into the binary is `error` but we use `info` here to get started. |
+| configs.port | string | `nil` | Allows overriding the default port of 8080. If you change the port, you must also change the `service.port` value to match. |
 | configs.pullTimeout | string | `""` | Enables overriding the default timeout of 60000 milliseconds (6 minutes) to pull from an upstream server. |
 | fullnameOverride | string | `""` | Overrides the default naming logic that concats the release and chart name. |
-| image.digest | string | `nil` | Specify a digest to override the tag |
+| image | object | see sub-fields | Specifies the image. You can populate `tag` or `digest` or both. |
+| image.digest | string | `nil` | Specify a digest to use instead of the tag |
 | image.pullPolicy | string | `"IfNotPresent"` | The image pull policy |
 | image.registry | string | `"quay.io"` | The image registry |
 | image.repository | string | `"appzygy/ociregistry"` | The image repository |
-| image.tag | string | `"1.0.0"` | The image tag |
+| image.tag | string | `"1.1.0"` | The image tag |
 | imagePullSecrets | list | `[]` | Supports pullng the image from a registry that requires authentication |
-| ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | Configures an ingress for access to the registry outside the cluster. (Could be used to run the registry in one cluster to cache for multiple other clusters.) |
+| ingress | object | See sub-fields | Configures an ingress for access to the registry outside the cluster. (Could be used to run the registry in one cluster to cache for multiple other clusters.) |
 | nameOverride | string | `""` | Overrides the default naming logic that concats the release and chart name. |
 | nodeSelector | object | `{}` | Defines a node selector |
-| persistence | object | `{"emptyDir":{"enabled":true,"sizeLimit":"2Gi"},"hostPath":{"enabled":false,"path":"/var/lib/ociregistry","type":"DirectoryOrCreate"},"persistentVolumeClaim":{"enabled":false,"existingClaimName":"","newClaimSpec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"2Gi"}},"selector":{},"storageClassName":"","volumeMode":"Filesystem"}}}` | Persistence establishes the persistence strategy. For ephemeral storage (i.e. for testing or experimentation) enable the `emptyDir` option. If you have a storage provisioner, enable the persistentVolumeClaim option. The `hostPath` option uses host storage. `emptyDir` is enabled by default. |
-| persistence.emptyDir | object | `{"enabled":true,"sizeLimit":"2Gi"}` | Implements Empty Dir storage for the server. Suitable for testing and a quick capability evaluation. |
+| persistence | object | See sub-fields | Persistence establishes the persistence strategy. For ephemeral storage (i.e. for testing or experimentation) enable the `emptyDir` option. If you have a storage provisioner, enable the persistentVolumeClaim option. The `hostPath` option uses host storage. `emptyDir` is enabled by default. |
+| persistence.emptyDir | object | See sub-fields | Implements Empty Dir storage for the server. Suitable for testing and a quick capability evaluation. |
 | persistence.emptyDir.enabled | bool | `true` | This is the default option to facilitate a quick start |
 | persistence.emptyDir.sizeLimit | string | `"2Gi"` | Provides a size limit to the storage |
-| persistence.hostPath | object | `{"enabled":false,"path":"/var/lib/ociregistry","type":"DirectoryOrCreate"}` | Implements host path storage for the server. Suitable for testing and a quick capability evaluation. |
+| persistence.hostPath | object | See sub-fields | Implements host path storage for the server. Suitable for testing and a quick capability evaluation. |
 | persistence.hostPath.enabled | bool | `false` | Host path is disabled by default |
 | persistence.hostPath.path | string | `"/var/lib/ociregistry"` | By default the server will use this path for image storage. If you mount the storage at some other path you must change the `configs.imagePath` to match. |
-| persistence.persistentVolumeClaim | object | `{"enabled":false,"existingClaimName":"","newClaimSpec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"2Gi"}},"selector":{},"storageClassName":"","volumeMode":"Filesystem"}}` | Creates a PVC for persistent storage |
+| persistence.persistentVolumeClaim | object | See sub-fields | Creates a PVC for persistent storage |
 | persistence.persistentVolumeClaim.enabled | bool | `false` | Persistent storage is disabled by default. Set to `true` to enable persistent storage |
 | persistence.persistentVolumeClaim.existingClaimName | string | `""` | If you will bind to an existing PVC, specify the name here, otherwise leave the name blank and fill in the `newClaimSpec` hash. |
-| persistence.persistentVolumeClaim.newClaimSpec | object | `{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"2Gi"}},"selector":{},"storageClassName":"","volumeMode":"Filesystem"}` | Supply the parameters for a new PVC |
+| persistence.persistentVolumeClaim.newClaimSpec | object | See sub-fields | Supply the parameters for a new PVC |
 | persistence.persistentVolumeClaim.newClaimSpec.accessModes | list | `["ReadWriteOnce"]` | Access mode(s) supported by the storage class |
 | persistence.persistentVolumeClaim.newClaimSpec.resources | object | `{"requests":{"storage":"2Gi"}}` | Required storage capacity |
 | persistence.persistentVolumeClaim.newClaimSpec.selector | object | `{}` | specify any necessary storage selectors. |
@@ -114,16 +116,16 @@ More information, including how to configure access to upstream registries for a
 | podSecurityContext | object | `{}` | Provide any additional pod security context |
 | resources | object | `{}` | Specify requests and limits. Manifests are cached in memory to speed response time. Manifests vary greatly in size but - if an average manifest is 3K and your cluster has 100 images this would result in the server using 300K of RAM. |
 | securityContext | object | `{}` | Provide any additional deployment security context |
-| service | object | `{"nodePort":31080,"port":8080,"type":"NodePort"}` | service defines the Service resource. Since the intended use case is for you to configure containerd to mirror to the registry server, the server has to be reachable by containerd running on the host. Therefore the default configuration is to create a NodePort service, which makes the registry available to containerd on each host. If you change the port, you must also specify the `configs.port` above. |
-| serviceAccount | object | `{"annotations":{},"automount":true,"create":true,"name":""}` | Defines the service account configuration |
+| service | object | See sub-fields | service defines the Service resource. Since the intended use case is for you to configure containerd to mirror to the registry server, the server has to be reachable by containerd running on the host. Therefore the default configuration is to create a NodePort service, which makes the registry available to containerd on each host. If you change the port, you must also specify the `configs.port` above. |
+| serviceAccount | object | See sub-fields | Defines the service account configuration |
 | serviceAccount.annotations | object | `{}` | Provide any additional annotations you need |
 | serviceAccount.automount | bool | `true` | Automounts a token |
 | serviceAccount.create | bool | `true` | Creates a service account for the server |
 | serviceAccount.name | string | `""` | Overrides the default service name |
 | tolerations | list | `[]` | Defines Pod tolerations |
 | upstreamConfig | object | `{}` | Supports providing auth and TLS configuration for upstream registries. If not provided, then all upstreams will be tried by the server as anonymous with server cert verification using the OS trust store on the host. The values shows a fictional configuration with all allows hash keys populated. |
-| volumeMounts | list | `[{"mountPath":"/var/lib/ociregistry","name":"images","readOnly":false}]` | Volume Mounts provides the container mount paths. Since this is a caching registry it needs a place to store image data. |
-| volumeMounts[0] | object | `{"mountPath":"/var/lib/ociregistry","name":"images","readOnly":false}` | When you select a `persistence` type, a volume will be templated named 'images'. By default the server will look in the `mountPath`. If you mount the storage at some other path you must change the `configs.imagePath` to match. |
+| volumeMounts | list | See sub-fields | Volume Mounts provides the container mount paths. Since this is a caching registry it needs a place to store image data. |
+| volumeMounts[0] | object | `{"mountPath":"/var/lib/ociregistry","name":"images","readOnly":false}` | When you select a `persistence` type, a volume will be templated named `images`. By default the server will look in the `mountPath`. If you mount the storage at some other path you must change the `configs.imagePath` to match. |
 | volumeMounts[0].mountPath | string | `"/var/lib/ociregistry"` | Shows the default value hard-coded into the server |
 | volumes | list | `[]` | Use this to mount other volumes. |
 
