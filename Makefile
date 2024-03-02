@@ -1,14 +1,14 @@
 .PHONY : all
-all: helm-docs helm-package helm-index
+all: docs package index
 
-.PHONY: helm-docs
-helm-docs:
+.PHONY: docs
+docs:
 	helm-docs
 
-.PHONY: helm-package
-helm-package:
+.PHONY: package
+package:
 	helm package ociregistry
 
-.PHONY: helm-index
-helm-index:
+.PHONY: index
+index:
 	helm repo index --url https://aceeric.github.io/ociregistry-helm .

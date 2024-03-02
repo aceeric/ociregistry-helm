@@ -2,16 +2,17 @@ apiVersion: v1
 entries:
   ociregistry:
   - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2024-02-28T18:57:58.640101111-05:00"
+    appVersion: 1.1.0
+    created: "2024-03-01T20:30:47.945729026-05:00"
     description: A pull-only, pull-through caching OCI image distribution server.
-    digest: ac4cf3afe66931599ae8697b22ab6a2217bc5c7a40239ca653102f1056a4af44
+    digest: 01cf87d653b89d5ccb4a7e86ae48b8ea5c20dd5a6b2a8158321c5d5520770442
     home: https://github.com/aceeric/ociregistry
     keywords:
     - oci
     - distribution
     - registry
     - containerd
+    - kubernetes
     - mirror
     - pull-through
     - docker
@@ -23,6 +24,6 @@ entries:
     - https://github.com/aceeric/ociregistry
     type: application
     urls:
-    - https://aceeric.github.io/ociregistry-helm/ociregistry-1.0.0.tgz
-    version: 1.0.0
-generated: "2024-02-28T18:57:58.639230228-05:00"
+    - https://aceeric.github.io/ociregistry-helm/ociregistry-1.1.0.tgz
+    version: 1.1.0
+generated: "2024-03-01T20:30:47.944162618-05:00"

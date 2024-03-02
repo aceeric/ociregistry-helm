@@ -4,7 +4,7 @@ image:
   # -- The image repository
   repository: appzygy/ociregistry
   # -- The image tag
-  tag: 1.0.0
+  tag: 1.1.0
   # -- Specify a digest to override the tag
   digest:
   # -- The image pull policy
