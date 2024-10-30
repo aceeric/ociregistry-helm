@@ -90,7 +90,7 @@ More information, including how to configure access to upstream registries for a
 | image.pullPolicy | string | `"IfNotPresent"` | The image pull policy |
 | image.registry | string | `"quay.io"` | The image registry |
 | image.repository | string | `"appzygy/ociregistry"` | The image repository |
-| image.tag | string | `"1.3.0"` | The image tag |
+| image.tag | string | `"1.4.0"` | The image tag |
 | imagePullSecrets | list | `[]` | Supports pullng the image from a registry that requires authentication |
 | ingress | object | See sub-fields | Configures an ingress for access to the registry outside the cluster. (Could be used to run the registry in one cluster to cache for multiple other clusters.) |
 | nameOverride | string | `""` | Overrides the default naming logic that concats the release and chart name. |
@@ -123,7 +123,7 @@ More information, including how to configure access to upstream registries for a
 | serviceAccount.create | bool | `true` | Creates a service account for the server |
 | serviceAccount.name | string | `""` | Overrides the default service name |
 | tolerations | list | `[]` | Defines Pod tolerations |
-| upstreamConfig | object | `{}` | Supports providing auth and TLS configuration for upstream registries. If not provided, then all upstreams will be tried by the server as anonymous with server cert verification using the OS trust store on the host. The values shows a fictional configuration with all allows hash keys populated. |
+| upstreamConfig | object | `{}` | Supports providing auth and TLS configuration for upstream registries. If not provided, then all upstreams will be tried by the server as anonymous with server cert verification using the OS trust store on the host. The values shows a fictional configuration with all allowed hash keys populated. |
 | volumeMounts | list | See sub-fields | Volume Mounts provides the container mount paths. Since this is a caching registry it needs a place to store image data. |
 | volumeMounts[0] | object | `{"mountPath":"/var/lib/ociregistry","name":"images","readOnly":false}` | When you select a `persistence` type, a volume will be templated named `images`. By default the server will look in the `mountPath`. If you mount the storage at some other path you must change the `configs.imagePath` to match. |
 | volumeMounts[0].mountPath | string | `"/var/lib/ociregistry"` | Shows the default value hard-coded into the server |
