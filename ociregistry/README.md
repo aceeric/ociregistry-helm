@@ -69,7 +69,7 @@ More information, including how to configure access to upstream registries for a
 
 ## Chart Details
 
-![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.4.0](https://img.shields.io/badge/AppVersion-1.4.0-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.0](https://img.shields.io/badge/AppVersion-1.5.0-informational?style=flat-square)
 
 ## Chart Values
 
@@ -90,7 +90,7 @@ More information, including how to configure access to upstream registries for a
 | image.pullPolicy | string | `"IfNotPresent"` | The image pull policy |
 | image.registry | string | `"quay.io"` | The image registry |
 | image.repository | string | `"appzygy/ociregistry"` | The image repository |
-| image.tag | string | `"1.4.0"` | The image tag |
+| image.tag | string | `"1.5.0"` | The image tag |
 | imagePullSecrets | list | `[]` | Supports pullng the image from a registry that requires authentication |
 | ingress | object | See sub-fields | Configures an ingress for access to the registry outside the cluster. (Could be used to run the registry in one cluster to cache for multiple other clusters.) |
 | nameOverride | string | `""` | Overrides the default naming logic that concats the release and chart name. |
